@@ -1,0 +1,28 @@
+name: "AI Stable Access -> 🌀 负载均衡"
+desc: "Prepend rules for ChatGPT + Google AI Studio, all routed to 🌀 负载均衡, QUIC off, optional DNS policy"
+
+script:
+  shortcuts:
+    quic: network == 'udp' and dst_port == 443
+
+
+rules:
+  # 先禁 QUIC（UDP 443），更稳
+  - "SCRIPT,quic,REJECT,no-track"
+
+  # ChatGPT / OpenAI
+  - "DOMAIN-SUFFIX,chatgpt.com,🌀 负载均衡"
+  - "DOMAIN-SUFFIX,openai.com,🌀 负载均衡"
+  - "DOMAIN-SUFFIX,oaistatic.com,🌀 负载均衡"
+  - "DOMAIN-SUFFIX,oaiusercontent.com,🌀 负载均衡"
+
+  # Google AI Studio / Gemini API
+  - "DOMAIN,aistudio.google.com,🌀 负载均衡"
+  - "DOMAIN-SUFFIX,ai.google.dev,🌀 负载均衡"
+  - "DOMAIN,accounts.google.com,🌀 负载均衡"
+  - "DOMAIN,generativelanguage.googleapis.com,🌀 负载均衡"
+  - "DOMAIN,apis.google.com,🌀 负载均衡"
+  - "DOMAIN-SUFFIX,googleapis.com,🌀 负载均衡"
+  - "DOMAIN-SUFFIX,gstatic.com,🌀 负载均衡"
+  - "DOMAIN-SUFFIX,googleusercontent.com,🌀 负载均衡"
+  - "DOMAIN-SUFFIX,recaptcha.net,🌀 负载均衡"
